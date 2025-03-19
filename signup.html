@@ -29,7 +29,7 @@
 
 <div class="signup-container">
     <h3 class="text-center">Create Your MealMate Account</h3>
-    <form id="signup-form">
+    <form>
         <div class="mb-3">
             <label for="fullname" class="form-label">Full Name</label>
             <input type="text" class="form-control" id="fullname" placeholder="Enter your full name" required>
@@ -58,34 +58,50 @@
     <div class="signin-link">
         <p>Already have an account? <a href="signin.html">Sign In</a></p>
         <p>GO BACK <a href="index.html">Home</a></p>
+
     </div>
 </div>
 
-<script>
-    // Handle form submission
-    document.getElementById('signup-form').addEventListener('submit', function (e) {
-        e.preventDefault(); // Prevent the form from submitting the traditional way
-
-        // Get user input
-        const fullName = document.getElementById('fullname').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const cuisine = document.getElementById('cuisine').value;
-
-        // Save user data to localStorage (or send to a backend server)
-        const user = {
-            fullName,
-            email,
-            password,
-            cuisine,
-        };
-        localStorage.setItem('user', JSON.stringify(user));
-
-        // Redirect to the Dashboard
-        window.location.href = 'dashboard.html';
-    });
-</script>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelector('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const data = {
+    fullname: document.getElementById('fullname').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    cuisine: document.getElementById('cuisine').value,
+  };
+
+  try {
+    const response = await fetch('http://127.0.0.1:3000/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    const text = await response.text();
+    let result;
+    try {
+      result = text ? JSON.parse(text) : {};
+    } catch (err) {
+      console.error("Failed to parse JSON:", err);
+      result = {};
+    }
+    
+    if (!response.ok) {
+      alert(result.error || 'Registration failed!');
+    } else {
+      alert(result.message || 'User registered successfully!');
+      window.location.href = 'signin.html';
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
+  </script>
+  
 </body>
 </html>

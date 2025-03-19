@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MealMate - Halifax Restaurants</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            background-color: #fff3e0;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #ff5722;
+            padding: 10px 0;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .hero {
+            height: 60vh;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(255, 87, 34, 0.8)), url('halifax-bg.jpg') center/cover no-repeat;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #hero-text {
+            font-size: 4rem;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid white;
+            width: 0;
+            animation: typing 3s steps(40, end) forwards;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+
+        .btn-light {
+            background-color: #ffc107;
+            border: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn-light:hover {
+            transform: scale(1.05);
+            background-color: #ffca28;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-container select {
+            padding: 10px;
+            border: 2px solid #ff5722;
+            border-radius: 5px;
+            font-size: 1rem;
+            width: 200px;
+        }
+
+        .restaurant-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            width: 30%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .restaurant-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .restaurant-box img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .restaurant-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #ff5722;
+        }
+
+        .restaurant-box p {
+            font-size: 1rem;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        .restaurant-box button {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .restaurant-box button:hover {
+            background: #e64a19;
+        }
+
+        footer {
+            background-color: #ff5722;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .rating-stars {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .rating-stars span {
+            font-size: 24px;
+            color: #ffc107;
+            cursor: pointer;
+        }
+
+        .rating-stars span:hover,
+        .rating-stars span.active {
+            color: #ff5722;
+        }
+        
+        /* Chatbot Styles */
+        .ai-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 1.5rem;
+        }
+
+        .ai-chatbox {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 350px;
+            height: 400px;
+            background: white;
+            border: 2px solid #ff5722;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .ai-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .ai-message {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #ff5722;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .ai-message-bot {
+            background: #f1f1f1;
+            color: black;
+            align-self: flex-start;
+        }
+
+        .ai-input-container {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .ai-input-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .ai-input-container button {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand text-white" href="#">MealMate</a>
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto" id="navLinks">
+              <!-- Shown when user is not logged in -->
+              <li class="nav-item" id="signInNav">
+                <a class="nav-link" href="signin.html">Sign Up/Sign In</a>
+              </li>
+              <!-- Always visible links -->
+              <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+              <li class="nav-item"><a class="nav-link" href="donation.html">Donate</a></li>
+              <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+              <!-- Shown when logged in -->
+              <li class="nav-item d-none" id="userNav">
+                <span class="nav-link" id="usernameDisplay"></span>
+              </li>
+              <li class="nav-item d-none" id="logoutNav">
+                <button class="nav-link btn btn-link text-white" onclick="logout()">Logout</button>
+              </li>
+              <!-- My Meal Plan link (active) -->
+              <li class="nav-item d-none" id="myPlanNav">
+                <a class="nav-link active" href="mymealplan.html">My Meal Plan</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>    
+
+<div class="hero">
+    <div id="hero-text">Explore Indian Restaurants</div>
+    <p style="font-size: 1.5rem;">Discover the best dining experiences in Halifax, Dartmouth, Bedford, and Truro.</p>
+    <button class="btn btn-light" onclick="window.location.href='subscribe.html'">Subscribe Now</button></div>
+
+<div class="container my-5">
+    <h2 class="text-center" style="font-size: 2.5rem; color: #ff5722;">Set Your Preferences</h2>
+    <div class="filter-container">
+        <select id="budgetFilter">
+            <option value="">Select Budget</option>
+            <option value="$10-$20">$10-$20</option>
+            <option value="$20-$40">$20-$40</option>
+            <option value="$40+">$40+</option>
+        </select>
+        <select id="dietaryFilter">
+            <option value="">Select Dietary Preference</option>
+            <option value="Vegetarian">Vegetarian</option>
+            <option value="Non-Vegetarian">Non-Vegetarian</option>
+            <option value="Vegan">Vegan</option>
+        </select>
+        <select id="locationFilter">
+            <option value="">Select Location</option>
+            <option value="Halifax">Halifax</option>
+            <option value="Dartmouth">Dartmouth</option>
+            <option value="Bedford">Bedford</option>
+            <option value="Truro">Truro</option>
+        </select>
+        <button class="btn btn-primary" onclick="filterRestaurants()">Apply Filters</button>
+    </div>
+</div>
+
+<div class="container my-5">
+    <h2 class="text-center" style="font-size: 2.5rem; color: #ff5722;">Popular Restaurants</h2>
+    <div id="restaurants" class="d-flex flex-wrap justify-content-center">
+        <!-- Restaurants will be dynamically populated here -->
+    </div>
+</div>
+
+<footer>&copy; 2025 MealMate - Halifax Restaurants</footer>
+<!-- Chatbot -->
+<button class="ai-btn" id="aiButton" onclick="toggleAIChat()">💬 Ask MealMate AI</button>
+
+<div class="ai-chatbox" id="aiChatbox">
+    <div class="ai-messages" id="aiMessages">
+        <div class="ai-message ai-message-bot">👋 Welcome! I can help you with restaurant recommendations. What is your dietary preference? (Vegetarian, Non-Vegetarian, Vegan)</div>
+    </div>
+    <div class="ai-input-container">
+        <input type="text" id="aiInput" placeholder="Type your response...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<!-- Restaurant Details Page -->
+<div id="restaurantDetails" style="display: none; padding: 20px;">
+    <h2 id="restaurantName"></h2>
+    <p id="restaurantRating"></p>
+    <p id="restaurantPriceRange"></p>
+    <div class="rating-stars">
+        <span onclick="rateRestaurant(1)">★</span>
+        <span onclick="rateRestaurant(2)">★</span>
+        <span onclick="rateRestaurant(3)">★</span>
+        <span onclick="rateRestaurant(4)">★</span>
+        <span onclick="rateRestaurant(5)">★</span>
+    </div>
+    <textarea id="feedback" placeholder="Leave your feedback..." style="width: 100%; height: 100px; margin: 10px 0;"></textarea>
+    <button onclick="submitFeedback()">Submit Feedback</button>
+    <button onclick="closeRestaurantDetails()">Close</button>
+</div>
+
+
+<!-- Restaurant Details Page -->
+<div id="restaurantDetails" style="display: none; padding: 20px;">
+    <h2 id="restaurantName"></h2>
+    <p id="restaurantRating"></p>
+    <p id="restaurantPriceRange"></p>
+    <div class="rating-stars">
+        <span onclick="rateRestaurant(1)">★</span>
+        <span onclick="rateRestaurant(2)">★</span>
+        <span onclick="rateRestaurant(3)">★</span>
+        <span onclick="rateRestaurant(4)">★</span>
+        <span onclick="rateRestaurant(5)">★</span>
+    </div>
+    <textarea id="feedback" placeholder="Leave your feedback..." style="width: 100%; height: 100px; margin: 10px 0;"></textarea>
+    <button onclick="submitFeedback()">Submit Feedback</button>
+    <button onclick="closeRestaurantDetails()">Close</button>
+</div>
+
+<script>
+let restaurants = [
+    { name: 'Taj Mahal', cuisine: 'Indian', rating: 4.5, reviews: 120, priceRange: '$10-$20', dietary: 'Vegetarian', location: 'Halifax', image: '/images/taj-mahal.jpg' },
+    { name: 'Curry Village', cuisine: 'Indian', rating: 4.2, reviews: 90, priceRange: '$20-$40', dietary: 'Non-Vegetarian', location: 'Dartmouth', image: '/images/curry-village.jpg' },
+    { name: 'Red Chillies', cuisine: 'Indian', rating: 4.7, reviews: 150, priceRange: '$40+', dietary: 'Vegan', location: 'Bedford', image: '/images/india/mirchi/OIP (3).jpeg' },
+    { name: 'Dhaba Express', cuisine: 'Indian', rating: 4.3, reviews: 80, priceRange: '$10-$20', dietary: 'Non-Vegetarian', location: 'Truro', image: '/images/india/mirchi/OIP (1).jpeg' },
+    { name: 'Naan and Curry', cuisine: 'Indian', rating: 4.6, reviews: 110, priceRange: '$20-$40', dietary: 'Vegetarian', location: 'Halifax', image: '/images/india/mirchi/OIP (2).jpeg' },
+    { name: 'Mirchi Tandoor', cuisine: 'Indian', rating: 4.8, reviews: 130, priceRange: '$40+', dietary: 'Vegan', location: 'Halifax', image: '/images/india/mirchi/OIP.jpeg' }
+];
+
+function filterRestaurants() {
+    const budget = document.getElementById('budgetFilter').value;
+    const dietary = document.getElementById('dietaryFilter').value;
+    const location = document.getElementById('locationFilter').value;
+
+    const filteredRestaurants = restaurants.filter(restaurant => {
+        return (
+            (budget === '' || restaurant.priceRange === budget) &&
+            (dietary === '' || restaurant.dietary === dietary) &&
+            (location === '' || restaurant.location === location)
+        );
+    });
+
+    displayRestaurants(filteredRestaurants);
+}
+
+function displayRestaurants(restaurants) {
+    const container = document.getElementById('restaurants');
+    container.innerHTML = '';
+
+    if (restaurants.length === 0) {
+        container.innerHTML = '<p>No restaurants match your criteria.</p>';
+        return;
+    }
+
+    restaurants.forEach(restaurant => {
+        const box = document.createElement('div');
+        box.className = 'restaurant-box';
+        box.innerHTML = `
+            <img src="${restaurant.image}" alt="${restaurant.name}">
+            <h3>${restaurant.name}</h3>
+            <p>Rating: ${restaurant.rating} (${restaurant.reviews} reviews)</p>
+            <p>Price Range: ${restaurant.priceRange}</p>
+            <p>Location: ${restaurant.location}</p>
+            <button onclick="openRestaurantDetails('${restaurant.name}')">View Details</button>
+        `;
+        container.appendChild(box);
+    });
+}
+
+function openRestaurantDetails(name) {
+    
+    if (name === 'Mirchi Tandoor') {
+    // Redirect to the dedicated Mirchi page
+    window.location.href = 'mirchi.html';
+  } else {
+    const restaurant = restaurants.find(r => r.name === name);
+    if (restaurant) {
+      const restaurantDetails = document.getElementById('restaurantDetails');
+      const restaurantName = document.getElementById('restaurantName');
+      const restaurantRating = document.getElementById('restaurantRating');
+      const restaurantPriceRange = document.getElementById('restaurantPriceRange');
+  
+      restaurantName.innerText = restaurant.name;
+      restaurantRating.innerText = `Rating: ${restaurant.rating} (${restaurant.reviews} reviews)`;
+      restaurantPriceRange.innerText = `Price Range: ${restaurant.priceRange}`;
+      restaurantDetails.style.display = 'block';
+    }
+  }
+}
+
+function closeRestaurantDetails() {
+    document.getElementById('restaurantDetails').style.display = 'none';
+}
+
+function rateRestaurant(stars) {
+    const starElements = document.querySelectorAll('.rating-stars span');
+    starElements.forEach((star, index) => {
+        star.classList.toggle('active', index < stars);
+    });
+}
+
+function submitFeedback() {
+    const feedback = document.getElementById('feedback').value;
+    alert(`Thank you for your feedback on ${document.getElementById('restaurantName').innerText}!`);
+    closeRestaurantDetails();
+}
+function toggleAIChat() {
+    const chatbox = document.getElementById('aiChatbox');
+    chatbox.style.display = chatbox.style.display === 'flex' ? 'none' : 'flex';
+}
+
+function sendMessage() {
+    const input = document.getElementById('aiInput');
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessage('user', message);
+    input.value = '';
+
+    setTimeout(() => addMessage('bot', generateAIResponse(message)), 800);
+}
+
+function addMessage(sender, text) {
+    const container = document.getElementById('aiMessages');
+    const div = document.createElement('div');
+    div.className = `ai-message ${sender}-message`;
+    div.innerText = text;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function generateAIResponse(msg) {
+    msg = msg.toLowerCase();
+    if (!dietaryPreference) {
+        dietaryPreference = msg;
+        return 'Great! What is your budget range? ($10-$20, $20-$40, $40+)';
+    } else if (!budget) {
+        budget = msg;
+        return getRestaurantRecommendations(dietaryPreference, budget);
+    } else {
+        return 'I can help with more recommendations or answer any other questions!';
+    }
+}
+
+function getRestaurantRecommendations(dietaryPreference, budget) {
+    const filteredRestaurants = restaurants.filter(restaurant => 
+        restaurant.dietary.toLowerCase() === dietaryPreference.toLowerCase() &&
+        restaurant.priceRange === budget
+    );
+
+    if (filteredRestaurants.length > 0) {
+        let response = 'Here are some recommendations:\n';
+        filteredRestaurants.forEach(restaurant => {
+            response += `${restaurant.name} - ${restaurant.location}\n`;
+        });
+        return response;
+    } else {
+        return 'Sorry, no restaurants match your criteria.';
+    }
+}
+// Initial display of all restaurants
+displayRestaurants(restaurants);
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', checkUserStatus);
+</script>
+
+</body>
+</html>

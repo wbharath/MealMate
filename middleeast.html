@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MealMate - Middle Eastern Cuisine</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            background-color: #fff8f2;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: #b8860b;
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(184, 134, 11, 0.8)), url('middleeast-bg.jpg') center/cover no-repeat;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        #hero-text {
+            font-size: 3rem;
+            font-weight: bold;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid white;
+            width: 0;
+            animation: typing 3s steps(40, end) forwards, blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: white }
+        }
+
+        .btn-light {
+            background-color: #ffdd57;
+            color: #b8860b;
+            font-weight: bold;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-light:hover {
+            background-color: #ffc107;
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .meal-plans .card {
+            transition: all 0.3s ease;
+        }
+
+        .meal-plans .card:hover {
+            transform: translateY(-10px) scale(1.03);
+        }
+
+        .food-images img {
+            width: 100%;
+            max-width: 200px;
+            margin: 10px;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .food-images img:hover {
+            transform: scale(1.15);
+        }
+
+        .testimonials, .restaurants {
+            background-color: #fdf1e5;
+            padding: 50px 0;
+        }
+
+        footer {
+            background: #b8860b;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+        /* Floating AI Button */
+        .ai-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff6347;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .ai-btn:hover {
+            background: #b8860b;
+        }
+
+        /* AI Chatbox */
+        .ai-chatbox {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 60%;
+            background: white;
+            border: 2px solid #b8860b;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 -2px 15px rgba(0,0,0,0.1);
+            z-index: 1001;
+        }
+
+        .ai-header {
+            background: #b8860b;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .ai-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        .ai-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+        }
+
+        .ai-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            outline: none;
+        }
+
+        .ai-input button {
+            background: #ff6347;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .ai-message {
+            margin: 5px 0;
+            padding: 8px 12px;
+            border-radius: 15px;
+            max-width: 80%;
+            font-size: 14px;
+        }
+
+        .user-message {
+            background: #ff6347;
+            color: white;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .ai-message-bot {
+            background: #f0f0f0;
+            color: #333;
+            align-self: flex-start;
+        }
+
+        /* Animation */
+        .ai-message {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="#">MealMate</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto" id="navLinks">
+          <!-- Shown when user is not logged in -->
+          <li class="nav-item" id="signInNav">
+            <a class="nav-link" href="signin.html">Sign Up/Sign In</a>
+          </li>
+          <!-- Always visible links -->
+          <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+          <li class="nav-item"><a class="nav-link" href="donation.html">Donate</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <!-- Shown when logged in -->
+          <li class="nav-item d-none" id="userNav">
+            <span class="nav-link" id="usernameDisplay"></span>
+          </li>
+          <li class="nav-item d-none" id="logoutNav">
+            <button class="nav-link btn btn-link text-white" onclick="logout()">Logout</button>
+          </li>
+          <!-- My Meal Plan link (active) -->
+          <li class="nav-item d-none" id="myPlanNav">
+            <a class="nav-link active" href="mymealplan.html">My Meal Plan</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav> 
+<!-- Cuisine Dropdown (Bootstrap-based with animation touch) -->
+<div class="container my-4 text-center">
+    <h3 class="mb-3">Explore Global Cuisines</h3>
+    <div class="dropdown">
+        <button class="btn btn-danger dropdown-toggle" type="button" id="cuisineDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Select Cuisine
+        </button>
+        <ul class="dropdown-menu animate__animated animate__fadeIn" aria-labelledby="cuisineDropdown">
+            <li><a class="dropdown-item" href="japanese.html">🍣 Japanese</a></li>
+            <li><a class="dropdown-item" href="middleeast.html">🥙 Middle Eastern</a></li>
+            <li><a class="dropdown-item" href="bangladesh.html">🍛 Bangladeshi</a></li>
+            <li><a class="dropdown-item" href="pakistan.html">🥘 Pakistani</a></li>
+            <li><a class="dropdown-item" href="nigeria.html">🥩 Nigerian</a></li>
+            <li><a class="dropdown-item" href="india.html">🍲 Indian</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Include Animate.css for animation (optional but nice) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+
+<!-- Hero Section -->
+<div class="hero">
+    <div id="hero-text">Middle Eastern Cuisine Delivered</div>
+    <p>Experience the rich flavors and authentic dishes from the Middle East at your doorstep.</p>
+    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#subscriptionModal">Subscribe Now</button>
+</div>
+
+<!-- Meal Plans Section -->
+<div class="container my-5 meal-plans fade-in">
+    <h2 class="text-center mb-4">Choose Your Meal Plan</h2>
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h4>Basic Plan</h4>
+                <p>$11/week - 3 meals/day</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h4>Premium Plan</h4>
+                <p>$21/week - 5 meals/day</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-4">
+                <h4>Elite Plan</h4>
+                <p>$31/week - 7 meals/day</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Food Images Section -->
+<div class="container text-center food-images fade-in">
+    <h2 class="mb-4">Middle Eastern Delights</h2>
+    <img src="images/middleeast/download (4).jpeg" alt="Hummus">
+    <img src="images/middleeast/images.jpeg" alt="Shawarma">
+    <img src="images/middleeast/download (1).jpeg" alt="Falafel">
+    <img src="images/middleeast/download (2).jpeg" alt="Kebabs">
+    <img src="images/middleeast/download (3).jpeg" alt="Baklava">
+</div>
+
+<!-- Restaurants Section -->
+<div class="restaurants fade-in">
+    <div class="container">
+        <h2 class="text-center mb-4">Top Restaurants & Home Cooks</h2>
+        <ul class="list-group">
+            <li class="list-group-item">🌯 Al-Amir Shawarma - Authentic Lebanese Experience</li>
+            <li class="list-group-item">🍲 Mama Fatima’s Kitchen - Traditional Home-cooked Meals</li>
+            <li class="list-group-item">🥙 Habibi’s Grill - Famous for Falafel & Kebabs</li>
+            <li class="list-group-item">🍰 Sweet Oasis - Best Baklava in Town</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="testimonials fade-in">
+    <div class="container">
+        <h2 class="text-center mb-4">What Our Customers Say</h2>
+        <blockquote>"Absolutely delicious meals delivered on time." - Sarah A.</blockquote>
+        <blockquote>"A taste of home, right at my doorstep." - Ahmed K.</blockquote>
+        <blockquote>"Great variety, affordable plans, and amazing service." - Fatima M.</blockquote>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="subscriptionModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>Choose Your Plan</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <select class="form-select mb-3">
+                    <option>Basic - $11/week</option>
+                    <option>Premium - $21/week</option>
+                    <option>Elite - $31/week</option>
+                </select>
+                <p>Payment Method</p>
+                <select class="form-select">
+                    <option>Credit Card</option>
+                    <option>PayPal</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary">Subscribe</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>&copy; 2025 MealMate - Global Flavors Delivered</footer>
+
+<script>
+    const fadeEls = document.querySelectorAll('.fade-in');
+    window.addEventListener('scroll', () => {
+        fadeEls.forEach(el => {
+            if (el.getBoundingClientRect().top < window.innerHeight - 50) {
+                el.classList.add('show');
+            }
+        });
+    });
+</script>
+
+<!-- Floating AI Chat Button -->
+<button class="ai-btn" onclick="toggleAIChat()">💬 Ask MealMate AI</button>
+
+<!-- AI Chatbox -->
+<div class="ai-chatbox" id="aiChatbox">
+    <div class="ai-header">MealMate AI Advisor</div>
+    <div class="ai-messages" id="aiMessages">
+        <div class="ai-message ai-message-bot">👋 Hello! How can I assist you today?</div>
+        <div class="ai-message ai-message-bot">Here are some things you can ask:</div>
+        <div class="ai-message ai-message-bot">- "Suggest a vegetarian Middle Eastern meal"<br>- "What are popular dishes in Lebanon?"<br>- "What’s a healthy meal plan for the week?"</div>
+    </div>
+    <div class="ai-input">
+        <input type="text" id="aiInput" placeholder="Ask me anything...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    function toggleAIChat() {
+        const chatbox = document.getElementById('aiChatbox');
+        chatbox.style.display = (chatbox.style.display === 'none' || chatbox.style.display === '') ? 'flex' : 'none';
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('aiInput');
+        const message = input.value.trim();
+        if (message === '') return;
+
+        addMessage('user', message);
+        input.value = '';
+
+        // Simulated AI Responses
+        setTimeout(() => {
+            const aiResponse = generateAIResponse(message);
+            addMessage('bot', aiResponse);
+        }, 800);
+    }
+
+    function addMessage(sender, text) {
+        const messagesContainer = document.getElementById('aiMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('ai-message');
+        messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message-bot');
+        messageDiv.innerText = text;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function generateAIResponse(userMessage) {
+        const lowerMsg = userMessage.toLowerCase();
+        if (lowerMsg.includes('vegetarian')) {
+            return 'I recommend trying Falafel with Hummus and a side of Tabouleh salad!';
+        } else if (lowerMsg.includes('lebanon')) {
+            return 'Some popular Lebanese dishes include Kibbeh, Manakish, and Fattoush!';
+        } else if (lowerMsg.includes('healthy')) {
+            return 'A healthy weekly plan could include: Grilled Chicken Shawarma, Lentil Soup, and Grilled Veggie Platters.';
+        } else {
+            return "That's an interesting question! Let me find an answer for you.";
+        }
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', checkUserStatus);
+</script>
+</body>
+</html>

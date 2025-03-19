@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealMate - Global Flavors Delivered</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fdf8f4;
+            color: #444;
+            overflow-x: hidden;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Fullscreen collage animation container */
+        .collage-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            z-index: 1000;
+            background-color: #000;
+            overflow: hidden;
+            animation: fadeOut 2s ease 5s forwards;
+        }
+        .collage-intro img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            animation: zoomIn 4s ease forwards;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(1.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+        .collage-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 4rem;
+            font-weight: bold;
+            z-index: 1001;
+            opacity: 0;
+            animation: fadeInLogo 2s ease 3.5s forwards;
+        }
+        @keyframes fadeInLogo {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('hero-bg.jpg') center/cover;
+            color: rgb(18, 17, 17);
+        }
+        .hero h1, .hero p {
+            animation: fadeInUp 1.2s ease-out;
+        }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: bold;
+        }
+        .hero p {
+            font-size: 1.5rem;
+        }
+        .btn-warning {
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .btn-warning:hover {
+            transform: scale(1.1);
+        }
+        .navbar {
+            background:#ff5722;
+            padding: 15px 0;
+        }
+        .navbar .nav-link {
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .navbar .nav-link:hover {
+            color: #fdf8f4;
+        }
+        .features {
+            background: white;
+            padding: 80px 0;
+        }
+        .feature-box {
+            background: #fdf8f4;
+            padding: 30px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .feature-box:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        footer {
+            background: #222;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+        .ai-chat {
+            background: #fdf8f4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        @keyframes fadeInUp {
+            from {opacity: 0; transform: translateY(40px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+    </style>
+</head>
+<body>
+
+<!-- Collage Intro Animation -->
+<div class="collage-intro">
+    <img src="images/bengali.jpg" alt="Bengali">
+    <img src="images/download.jpg" alt="Shawarma">
+    <img src="images/india.jpg" alt="Indian">
+    <img src="images/mexico.jpg" alt="Mexican">
+    <img src="images/ME.jpg" alt="Middle Eastern">
+    <img src="images/nigeria.jpg" alt="Nigerian">
+    <img src="images/PAK.jpg" alt="Pakistani">
+    <img src="images/spicy-tuna-roll-2-1652806800.avif" alt="Japanese">
+    <div class="collage-logo">MealMate</div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white" href="#">MealMate</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto" id="navLinks">
+          <!-- Shown when user is not logged in -->
+          <li class="nav-item" id="signInNav">
+            <a class="nav-link" href="signin.html">Sign Up/Sign In</a>
+          </li>
+          <!-- Always visible links -->
+          <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+          <li class="nav-item"><a class="nav-link" href="donation.html">Donate</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <!-- Shown when logged in -->
+          <li class="nav-item d-none" id="userNav">
+            <span class="nav-link" id="usernameDisplay"></span>
+          </li>
+          <li class="nav-item d-none" id="logoutNav">
+            <button class="nav-link btn btn-link text-white" onclick="logout()">Logout</button>
+          </li>
+          <!-- New: My Meal Plan link for logged-in users -->
+          <li class="nav-item d-none" id="myPlanNav">
+            <a class="nav-link" href="mymealplan.html">My Meal Plan</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  
+
+<div class="container my-4 text-center">
+    <h3 class="mb-3">Explore Global Cuisines</h3>
+    <div class="dropdown">
+        <button class="btn btn-danger dropdown-toggle" type="button" id="cuisineDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Select Cuisine
+        </button>
+        <ul class="dropdown-menu animate__animated animate__fadeIn" aria-labelledby="cuisineDropdown">
+            <li><a class="dropdown-item" href="japanese.html">🍣 Japanese</a></li>
+            <li><a class="dropdown-item" href="middleeast.html">🥙 Middle Eastern</a></li>
+            <li><a class="dropdown-item" href="bangladesh.html">🍛 Bangladeshi</a></li>
+            <li><a class="dropdown-item" href="pakistan.html">🥘 Pakistani</a></li>
+            <li><a class="dropdown-item" href="nigeria.html">🥩 Nigerian</a></li>
+            <li><a class="dropdown-item" href="india.html">🍲 Indian</a></li>
+            <li><a class="dropdown-item" href="mexican.html">🌮 Mexican</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<div class="hero">
+    <h1>Global Flavors Delivered</h1>
+    <p>Explore world cuisines from your home with MealMate.</p>
+    <a href="#features" class="btn btn-warning btn-lg">Explore Now</a>
+</div>
+
+<!-- Features Section -->
+<section id="features" class="features">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose MealMate?</h2>
+        <div class="row">
+            <div class="col-md-4"><div class="feature-box"><h4>🌍 Global Cuisines</h4><p>Explore curated meal plans from around the world.</p></div></div>
+            <div class="col-md-4"><div class="feature-box"><h4>🤖 AI Meal Advisor</h4><p>Our smart AI helps you choose meals based on preferences.</p></div></div>
+            <div class="col-md-4"><div class="feature-box"><h4>📅 Flexible Plans</h4><p>Subscription plans tailored to your appetite.</p></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- AI Chat Section -->
+<section class="container my-5">
+    <h3 class="text-center mb-4">Ask MealMate AI</h3>
+    <div class="ai-chat">
+        <div id="chatlog" class="mb-3"></div>
+        <input id="userInput" type="text" class="form-control" placeholder="Ask about cuisines, meals, or plans...">
+        <button class="btn btn-primary mt-3" onclick="askAI()">Ask</button>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer><p>&copy; 2025 MealMate - Your Global Meal Partner</p></footer>
+
+<!-- Chatbot Integration -->
+<div class="chatbox" id="aiChatbox" style="display: none;">
+    <div class="ai-header">MealMate AI Advisor</div>
+    <div class="ai-messages" id="aiMessages">
+        <div class="ai-message ai-message-bot">👋 Hello! How can I assist you today?</div>
+    </div>
+    <div class="ai-input">
+        <input type="text" id="aiInput" placeholder="Ask me anything...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    function toggleAIChat() {
+        const chatbox = document.getElementById('aiChatbox');
+        chatbox.style.display = (chatbox.style.display === 'none' || chatbox.style.display === '') ? 'flex' : 'none';
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('aiInput');
+        const message = input.value.trim();
+        if (!message) return;
+
+        addMessage('user', message);
+        input.value = '';
+
+        // Call the OpenAI API
+        const response = await getAIResponse(message);
+        addMessage('bot', response);
+    }
+
+    function addMessage(sender, text) {
+        const messagesContainer = document.getElementById('aiMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('ai-message');
+        messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message-bot');
+        messageDiv.innerText = text;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function getAIResponse(userMessage) {
+        const response = await fetch('/api/chat', { // Your server endpoint
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: userMessage }),
+        });
+        const data = await response.json();
+        return data.reply; // Assuming your server returns { reply: "..." }
+    }
+
+    // Function to ask AI
+    function askAI() {
+        const input = document.getElementById('userInput');
+        const message = input.value.trim();
+        if (!message) return;
+
+        addMessage('user', message);
+        input.value = '';
+
+        // Call the OpenAI API
+        getAIResponse(message).then(response => {
+            addMessage('bot', response);
+        });
+    }
+
+    // Check if the user is logged in by calling /api/user
+    async function checkUserStatus() {
+  try {
+    const response = await fetch('http://127.0.0.1:3000/api/user', {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if (response.status === 401) {
+      console.log('User is not logged in');
+      return;
+    }
+
+    const data = await response.json();
+    if (data && data.user) {
+      // Hide sign-in nav item
+      document.getElementById('signInNav').classList.add('d-none');
+      // Show user name and logout button
+      document.getElementById('userNav').classList.remove('d-none');
+      document.getElementById('logoutNav').classList.remove('d-none');
+      // Display the user’s name
+      document.getElementById('usernameDisplay').innerText = `Hello, ${data.user.fullname}`;
+    }
+  } catch (error) {
+    console.error('Error checking user status:', error);
+  }
+}
+    // Logout function to call /api/logout
+    async function logout() {
+      try {
+        // Adjust the URL/port as needed
+        const response = await fetch('http://127.0.0.1:3000/api/logout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include' // Include session cookies
+        });
+  
+        if (response.ok) {
+          // Reload the page (or redirect to sign in)
+          window.location.href = 'index.html';
+        } else {
+          const data = await response.json();
+          alert(data.error || 'Logout failed!');
+        }
+      } catch (error) {
+        console.error('Error logging out:', error);
+      }
+    }
+  
+    // Call checkUserStatus once the page loads
+    document.addEventListener('DOMContentLoaded', checkUserStatus);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', checkUserStatus);
+</script>
+
+</body>
+</html>

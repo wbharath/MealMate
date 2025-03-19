@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>MealMate - Japanese Cuisine</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            background-color: #ffffff; /* White background for a clean look */
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .navbar {
+            background-color: #e63946; /* Red color */
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: bold;
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(230, 57, 70, 0.8)), url('japanese-food-bg.jpg') center/cover no-repeat;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #hero-text {
+            font-size: 4rem; /* Increased font size */
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid white;
+            width: 0;
+            animation: typing 3s steps(40, end) forwards;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+
+        .btn-light {
+            background-color: #00b4d8; /* Light blue color */
+            border: none;
+            font-weight: bold;
+            font-size: 1.2rem; /* Increased font size */
+            padding: 10px 20px; /* Increased padding */
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn-light:hover {
+            transform: scale(1.05);
+            background-color: #48cae4; /* Lighter blue on hover */
+        }
+
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.8s, transform 0.8s; }
+        .fade-in.show { opacity: 1; transform: translateY(0); }
+
+        .ai-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #e63946; /* Red color */
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 1.5rem; /* Increased font size */
+        }
+
+        .ai-chatbox {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 60%;
+            display: none;
+            flex-direction: column;
+            background: white;
+            border: 2px solid #e63946; /* Red color */
+        }
+
+        .ai-messages { flex: 1; overflow-y: auto; padding: 10px; }
+        .ai-message { padding: 10px; margin: 5px 0; border-radius: 10px; }
+        .user-message { background: #e63946; color: white; align-self: flex-end; }
+        .ai-message-bot { background: #f1f1f1; color: black; align-self: flex-start; }
+
+        footer { background-color: #e63946; color: white; text-align: center; padding: 15px; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a class="navbar-brand text-white" href="#">MealMate</a>
+          <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto" id="navLinks">
+              <!-- Shown when user is not logged in -->
+              <li class="nav-item" id="signInNav">
+                <a class="nav-link" href="signin.html">Sign Up/Sign In</a>
+              </li>
+              <!-- Always visible links -->
+              <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+              <li class="nav-item"><a class="nav-link" href="donation.html">Donate</a></li>
+              <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+              <!-- Shown when logged in -->
+              <li class="nav-item d-none" id="userNav">
+                <span class="nav-link" id="usernameDisplay"></span>
+              </li>
+              <li class="nav-item d-none" id="logoutNav">
+                <button class="nav-link btn btn-link text-white" onclick="logout()">Logout</button>
+              </li>
+              <!-- My Meal Plan link (active) -->
+              <li class="nav-item d-none" id="myPlanNav">
+                <a class="nav-link active" href="mymealplan.html">My Meal Plan</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      
+
+<div class="container my-4 text-center">
+    <h3 class="mb-3">Explore Global Cuisines</h3>
+    <div class="dropdown">
+        <button class="btn btn-danger dropdown-toggle" type="button" id="cuisineDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Select Cuisine
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="cuisineDropdown">
+            <li><a class="dropdown-item" href="japanese.html">🍣 Japanese</a></li>
+            <li><a class="dropdown-item" href="middleeast.html">🥙 Middle Eastern</a></li>
+            <li><a class="dropdown-item" href="bangladesh.html">🍛 Bangladeshi</a></li>
+            <li><a class="dropdown-item" href="pakistan.html">🥘 Pakistani</a></li>
+            <li><a class="dropdown-item" href="nigeria.html">🥩 Nigerian</a></li>
+            <li><a class="dropdown-item" href="india.html">🍲 Indian</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="hero">
+    <div id="hero-text">Explore Authentic Japanese Cuisine</div>
+    <p style="font-size: 1.5rem;">Enjoy traditional meals from Tokyo to Kyoto delivered to your doorstep.</p>
+    <button class="btn btn-light">Subscribe Now</button>
+</div>
+
+<div class="container my-5 fade-in">
+    <h2 class="text-center" style="font-size: 2.5rem; color: #e63946;">Meal Plans</h2>
+    <div class="row">
+        <div class="col-md-4"><div class="card p-4" style="border: 2px solid #e63946;">Basic Plan - ¥1,000/week</div></div>
+        <div class="col-md-4"><div class="card p-4" style="border: 2px solid #e63946;">Premium Plan - ¥2,000/week</div></div>
+        <div class="col-md-4"><div class="card p-4" style="border: 2px solid #e63946;">Elite Plan - ¥3,000/week</div></div>
+    </div>
+</div>
+
+<div class="container text-center fade-in">
+    <h2 style="font-size: 2.5rem; color: #e63946;">Japanese Delicacies</h2>
+    <img src="images/japan/OIP (1).jpeg" alt="Sushi" width="150" class="m-2">
+    <img src="images/japan/OIP.jpeg" alt="Ramen" width="150" class="m-2">
+    <img src="images/japan/download.jpeg" alt="Tempura" width="150" class="m-2">
+</div>
+
+<div class="container my-5 fade-in">
+    <h2 class="text-center" style="font-size: 2.5rem; color: #e63946;">Popular Restaurants</h2>
+    <ul class="list-group">
+        <li class="list-group-item">🍣 Sushi House</li>
+        <li class="list-group-item">🍜 Ramen Station</li>
+        <li class="list-group-item">🍤 Tempura Delight</li>
+    </ul>
+</div>
+
+<div class="container my-5 fade-in">
+    <h2 class="text-center" style="font-size: 2.5rem; color: #e63946;">Customer Testimonials</h2>
+    <blockquote style="font-size: 1.2rem;">"The best sushi I've ever had, delivered fresh!" - Ken T.</blockquote>
+    <blockquote style="font-size: 1.2rem;">"Delicious ramen that reminds me of home!" - Yuki S.</blockquote>
+</div>
+
+<footer>&copy; 2025 MealMate Japan - Flavors of Japan Delivered</footer>
+
+<!-- AI Chatbot -->
+<button class="ai-btn" onclick="toggleAIChat()">💬 Ask MealMate AI</button>
+
+<div class="ai-chatbox" id="aiChatbox">
+    <div class="ai-messages" id="aiMessages">
+        <div class="ai-message ai-message-bot">👋 Welcome! Ask me about Japanese cuisine.</div>
+    </div>
+    <div>
+        <input type="text" id="aiInput" placeholder="Ask me anything..." style="width: 75%; padding: 5px;">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+function toggleAIChat() {
+    const chatbox = document.getElementById('aiChatbox');
+    chatbox.style.display = chatbox.style.display === 'flex' ? 'none' : 'flex';
+    chatbox.style.flexDirection = 'column';
+}
+
+function sendMessage() {
+    const input = document.getElementById('aiInput');
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessage('user', message);
+    input.value = '';
+
+    setTimeout(() => addMessage('bot', generateAIResponse(message)), 800);
+}
+
+function addMessage(sender, text) {
+    const container = document.getElementById('aiMessages');
+    const div = document.createElement('div');
+    div.className = `ai-message ${sender}-message`;
+    div.innerText = text;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function generateAIResponse(msg) {
+    msg = msg.toLowerCase();
+    if (msg.includes('sushi')) return 'Try our special Salmon Nigiri, it’s a must-try!';
+    if (msg.includes('ramen')) return 'Our Tonkotsu Ramen is rich and flavorful!';
+    if (msg.includes('vegetarian')) return 'Try our Vegetable Tempura or Tofu Teriyaki for great vegetarian options.';
+    if (msg.includes('healthy')) return 'Healthy meals: Sashimi, Miso Soup, and Edamame.';
+    return 'I can help with dish recommendations, meal plans, or restaurant suggestions!';
+}
+
+window.addEventListener('scroll', () => {
+    document.querySelectorAll('.fade-in').forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add('show');
+    });
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', checkUserStatus);
+</script>
+
+</body>
+</html>

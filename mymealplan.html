@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Meal Plan - MealMate</title>
+  <!-- Bootstrap CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+  />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #fdf8f4;
+      color: #444;
+      overflow-x: hidden;
+    }
+    .navbar {
+      background: #ff5722;
+      padding: 15px 0;
+    }
+    .navbar .nav-link {
+      color: white;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+    .navbar .nav-link:hover {
+      color: #fdf8f4;
+    }
+    /* Card styling */
+    .plan-card {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    .plan-card h2 {
+      color: #ff5722;
+      margin-bottom: 1rem;
+    }
+    .plan-card p {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+    .plan-card ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .plan-card ul li::before {
+      content: "•";
+      color: #ff5722;
+      margin-right: 8px;
+    }
+    .alert {
+      max-width: 800px;
+      margin: 40px auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Reuse the same navbar from index.html -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white" href="#">MealMate</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto" id="navLinks">
+        <!-- Shown when user is not logged in -->
+        <li class="nav-item" id="signInNav">
+          <a class="nav-link" href="signin.html">Sign Up/Sign In</a>
+        </li>
+        <!-- Always visible links -->
+        <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+        <li class="nav-item"><a class="nav-link" href="donation.html">Donate</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        <!-- Shown when logged in -->
+        <li class="nav-item d-none" id="userNav">
+          <span class="nav-link" id="usernameDisplay"></span>
+        </li>
+        <li class="nav-item d-none" id="logoutNav">
+          <button class="nav-link btn btn-link text-white" onclick="logout()">Logout</button>
+        </li>
+        <!-- My Meal Plan link (active) -->
+        <li class="nav-item d-none" id="myPlanNav">
+          <a class="nav-link active" href="mymealplan.html">My Meal Plan</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content for My Meal Plan -->
+<div class="container">
+  <!-- Card to display meal plan details (hidden by default) -->
+  <div class="plan-card" id="planCard" style="display: none;">
+    <h2 id="planTitle"></h2>
+    <p><strong>Total Price:</strong> <span id="planPrice"></span></p>
+    <h5 class="mt-3">Customizations:</h5>
+    <ul id="planCustomizations"></ul>
+    <button class="btn btn-primary mt-4" onclick="window.location.href='index.html'">
+      Back to Home
+    </button>
+  </div>
+
+  <!-- Alert if no plan is found or an error occurs -->
+  <div class="alert alert-info" id="noPlanAlert" style="display: none;">
+    No meal plan found. Please book a meal plan first.
+  </div>
+</div>
+
+<script>
+  // This function fetches the current meal plan from your backend
+  async function fetchMealPlan() {
+    try {
+      const response = await fetch('http://127.0.0.1:3000/api/plan', {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        // Show alert if not found or user not logged in
+        document.getElementById('noPlanAlert').style.display = 'block';
+        return;
+      }
+
+      const data = await response.json();
+      const plan = data.plan;
+
+      if (plan) {
+        // Populate the card with plan details
+        document.getElementById('planCard').style.display = 'block';
+        document.getElementById('planTitle').textContent =
+          `${plan.restaurantName} - ${plan.planName}`;
+        document.getElementById('planPrice').textContent =
+          `$${plan.totalPrice.toFixed(2)}`;
+
+        // Build the customization list
+        const customList = [
+          `Protein: ${plan.customization.protein}`,
+          `Gravy: ${plan.customization.gravy}`,
+          `Rice/Roti: ${plan.customization.riceRoti}`,
+          `Side: ${plan.customization.side}`,
+          `Days: ${plan.customization.days}`,
+          `Extra Rotis: ${plan.customization.extraRotis}`
+        ];
+        document.getElementById('planCustomizations').innerHTML =
+          customList.map(item => `<li>${item}</li>`).join('');
+      } else {
+        // If no plan data returned
+        document.getElementById('noPlanAlert').style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Error fetching meal plan:', error);
+      document.getElementById('noPlanAlert').style.display = 'block';
+      document.getElementById('noPlanAlert').innerText =
+        'Error fetching meal plan details.';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', fetchMealPlan);
+</script>
+
+<!-- Include your auth.js to handle user status, etc. -->
+<script src="auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', checkUserStatus);
+</script>
+
+<!-- Bootstrap Bundle JS -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+></script>
+<script src="auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', checkUserStatus);
+</script>
+</body>
+</html>

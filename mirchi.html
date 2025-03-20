@@ -1,282 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mirchi Tandoor - MealMate</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f8f9fa;
-            color: #333;
-        }
-
-        .navbar {
-            background: #ff5722;
-            padding: 10px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand, .nav-link {
-            color: white !important;
-            font-weight: bold;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        h1, h2, h3 {
-            color: #ff5722;
-        }
-
-        .meal-plan-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .meal-plan-option {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .meal-plan-option:hover {
-            transform: translateY(-5px);
-        }
-
-        .meal-plan-option h4 {
-            color: #ff5722;
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-
-        .meal-plan-option p {
-            font-size: 1rem;
-            color: #555;
-            margin: 5px 0;
-        }
-
-        .meal-plan-option button {
-            background: #ff5722;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-top: 10px;
-            transition: background 0.3s ease;
-        }
-
-        .meal-plan-option button:hover {
-            background: #e64a19;
-        }
-
-        .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .close-btn {
-            cursor: pointer;
-            color: red;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 20px;
-        }
-
-        .close-btn:hover {
-            color: darkred;
-        }
-
-        #customization-form label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-        }
-
-        #customization-form select, #customization-form input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #price-summary {
-            margin-top: 20px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        footer {
-            background: #ff5722;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
-        }
-
-        .ribbon-popup {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ff5722;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: slideDown 0.5s ease;
-        }
-
-        @keyframes slideDown {
-            from { top: -50px; }
-            to { top: 0; }
-        }
-
-        .ribbon-popup button {
-            background: white;
-            color: #ff5722;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .ribbon-popup button:hover {
-            background: #f3f3f3;
-        }
-
-        .seasonal-feast {
-            margin-top: 40px;
-            text-align: center;
-        }
-
-        .seasonal-feast h2 {
-            color: #ff5722;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .seasonal-feast p {
-            font-size: 1.1rem;
-            color: #555;
-            margin: 10px 0;
-        }
-
-        .seasonal-feast button {
-            background: #ff5722;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-top: 10px;
-            transition: background 0.3s ease;
-        }
-
-        .seasonal-feast button:hover {
-            background: #e64a19;
-        }
-
-        .chatbot {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #ff5722;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-        }
-
-        .chatbot:hover {
-            background: #e64a19;
-        }
-
-        .chatbot-popup {
-            display: none;
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            width: 300px;
-        }
-
-        .chatbot-popup input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .chatbot-popup button {
-            background: #ff5722;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .chatbot-popup button:hover {
-            background: #e64a19;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mirchi Tandoor - MealMate</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+      color: #333;
+    }
+    .navbar {
+      background: #ff5722;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand, .nav-link {
+      color: white !important;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2, h3 {
+      color: #ff5722;
+    }
+    .meal-plan-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .meal-plan-option {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .meal-plan-option:hover {
+      transform: translateY(-5px);
+    }
+    .meal-plan-option h4 {
+      color: #ff5722;
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+    .meal-plan-option p {
+      font-size: 1rem;
+      color: #555;
+      margin: 5px 0;
+    }
+    .meal-plan-option button {
+      background: #ff5722;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 10px;
+      transition: background 0.3s ease;
+    }
+    .meal-plan-option button:hover {
+      background: #e64a19;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      width: 90%;
+      max-width: 400px;
+    }
+    .close-btn {
+      cursor: pointer;
+      color: red;
+      font-weight: bold;
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 20px;
+    }
+    .close-btn:hover {
+      color: darkred;
+    }
+    #customization-form label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    #customization-form select,
+    #customization-form input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #price-summary {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #333;
+    }
+    footer {
+      background: #ff5722;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+    .ribbon-popup {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff5722;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 0 0 10px 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideDown 0.5s ease;
+    }
+    @keyframes slideDown {
+      from { top: -50px; }
+      to { top: 0; }
+    }
+    .ribbon-popup button {
+      background: white;
+      color: #ff5722;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .ribbon-popup button:hover {
+      background: #f3f3f3;
+    }
+    .seasonal-feast {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .seasonal-feast h2 {
+      color: #ff5722;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    .seasonal-feast p {
+      font-size: 1.1rem;
+      color: #555;
+      margin: 10px 0;
+    }
+    .seasonal-feast button {
+      background: #ff5722;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 10px;
+      transition: background 0.3s ease;
+    }
+    .seasonal-feast button:hover {
+      background: #e64a19;
+    }
+    .chatbot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff5722;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+    .chatbot:hover {
+      background: #e64a19;
+    }
+    .chatbot-popup {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      width: 300px;
+    }
+    .chatbot-popup input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .chatbot-popup button {
+      background: #ff5722;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .chatbot-popup button:hover {
+      background: #e64a19;
+    }
+  </style>
 </head>
 <body>
-
-<div class="ribbon-popup">
+  <div class="ribbon-popup">
     <span>🎉 5% additional discount for Dalhousie students! 🎉</span>
     <button onclick="showStudentIdPopup()">Claim Now</button>
-</div>
+  </div>
 
-<nav class="navbar navbar-expand-lg">
+  <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
       <a class="navbar-brand text-white" href="#">MealMate</a>
       <div class="collapse navbar-collapse">
@@ -305,7 +273,7 @@
     </div>
   </nav>
 
-<div class="container">
+  <div class="container">
     <h1>Mirchi Tandoor</h1>
     <p><strong>Cuisine:</strong> Indian</p>
     <p><strong>Rating:</strong> 4.8 (130 reviews)</p>
@@ -315,68 +283,68 @@
 
     <h2>Meal Plans</h2>
     <div class="meal-plan-options">
-        <div class="meal-plan-option" onclick="openPopup('basic')">
-            <h4>Basic Meal Plan</h4>
-            <p><strong>Price:</strong> $10 per meal</p>
-            <p><strong>Includes:</strong> 3-4 gravies, rice/roti, and a side (curd or salad).</p>
-            <button>Select Plan</button>
-        </div>
-        <div class="meal-plan-option" onclick="openPopup('standard')">
-            <h4>Standard Meal Plan</h4>
-            <p><strong>Price:</strong> $15 per meal</p>
-            <p><strong>Includes:</strong> 4-5 gravies, rice/roti, curd, salad, or papad.</p>
-            <button>Select Plan</button>
-        </div>
-        <div class="meal-plan-option" onclick="openPopup('premium')">
-            <h4>Premium Meal Plan</h4>
-            <p><strong>Price:</strong> $20 per meal</p>
-            <p><strong>Includes:</strong> 5-6 gravies, rice/roti, curd, salad, papad, dessert, and a starter.</p>
-            <button>Select Plan</button>
-        </div>
-        <div class="meal-plan-option" onclick="openPopup('ramadan')">
-            <h4>Ramadan Special Plan</h4>
-            <p><strong>Price:</strong> $25 per meal</p>
-            <p><strong>Includes:</strong> Iftar and Suhoor options, dessert, and a drink.</p>
-            <button>Select Plan</button>
-        </div>
-        <div class="meal-plan-option" onclick="openPopup('best-friends')">
-            <h4>Best Friends Plan</h4>
-            <p><strong>Price:</strong> $35 for 2 people</p>
-            <p><strong>Includes:</strong> Shared meals, 2 desserts, and 2 drinks.</p>
-            <button>Select Plan</button>
-        </div>
+      <div class="meal-plan-option" onclick="openPopup('basic')">
+        <h4>Basic Meal Plan</h4>
+        <p><strong>Price:</strong> $10 per meal</p>
+        <p><strong>Includes:</strong> 3-4 gravies, rice/roti, and a side (curd or salad).</p>
+        <button>Select Plan</button>
+      </div>
+      <div class="meal-plan-option" onclick="openPopup('standard')">
+        <h4>Standard Meal Plan</h4>
+        <p><strong>Price:</strong> $15 per meal</p>
+        <p><strong>Includes:</strong> 4-5 gravies, rice/roti, curd, salad, or papad.</p>
+        <button>Select Plan</button>
+      </div>
+      <div class="meal-plan-option" onclick="openPopup('premium')">
+        <h4>Premium Meal Plan</h4>
+        <p><strong>Price:</strong> $20 per meal</p>
+        <p><strong>Includes:</strong> 5-6 gravies, rice/roti, curd, salad, papad, dessert, and a starter.</p>
+        <button>Select Plan</button>
+      </div>
+      <div class="meal-plan-option" onclick="openPopup('ramadan')">
+        <h4>Ramadan Special Plan</h4>
+        <p><strong>Price:</strong> $25 per meal</p>
+        <p><strong>Includes:</strong> Iftar and Suhoor options, dessert, and a drink.</p>
+        <button>Select Plan</button>
+      </div>
+      <div class="meal-plan-option" onclick="openPopup('best-friends')">
+        <h4>Best Friends Plan</h4>
+        <p><strong>Price:</strong> $35 for 2 people</p>
+        <p><strong>Includes:</strong> Shared meals, 2 desserts, and 2 drinks.</p>
+        <button>Select Plan</button>
+      </div>
     </div>
 
     <div id="popup" class="popup">
-        <span class="close-btn" onclick="closePopup()">X</span>
-        <h2 id="plan-title"></h2>
-        <form id="customization-form"></form>
-        <div id="price-summary"></div>
-        <button onclick="submitChoice()">Confirm</button>
+      <span class="close-btn" onclick="closePopup()">X</span>
+      <h2 id="plan-title"></h2>
+      <form id="customization-form"></form>
+      <div id="price-summary"></div>
+      <button onclick="submitChoice()">Confirm</button>
     </div>
 
     <div class="seasonal-feast">
-        <h2>Book Your Eid Meal in Advance!</h2>
-        <p>"Good food is the foundation of genuine happiness." – Auguste Escoffier</p>
-        <p>Celebrate Eid with our special feast. Reserve your meal now and enjoy a 10% early bird discount!</p>
-        <button onclick="bookEidMeal()">Book Now</button>
+      <h2>Book Your Eid Meal in Advance!</h2>
+      <p>"Good food is the foundation of genuine happiness." – Auguste Escoffier</p>
+      <p>Celebrate Eid with our special feast. Reserve your meal now and enjoy a 10% early bird discount!</p>
+      <button onclick="bookEidMeal()">Book Now</button>
     </div>
-</div>
+  </div>
 
-<footer>
+  <footer>
     &copy; 2025 MealMate - Halifax Restaurants
-</footer>
+  </footer>
 
-<button class="chatbot" onclick="toggleChatbot()">💬</button>
+  <button class="chatbot" onclick="toggleChatbot()">💬</button>
 
-<div class="chatbot-popup" id="chatbot-popup">
+  <div class="chatbot-popup" id="chatbot-popup">
     <h4>AI Chatbot</h4>
     <p>Ask me anything about meal plans!</p>
-    <input type="text" id="chatbot-input" placeholder="Type your question...">
+    <input type="text" id="chatbot-input" placeholder="Type your question..." />
     <button onclick="sendChatbotMessage()">Send</button>
-</div>
+  </div>
 
-<script>
+  <script>
     let basePrice = 0;
     let extraRotis = 0;
     const extraRotisPrice = 2;
@@ -384,181 +352,168 @@
     let discount = 0;
 
     function openPopup(plan) {
-        const popup = document.getElementById('popup');
-        const title = document.getElementById('plan-title');
-        const form = document.getElementById('customization-form');
-        form.innerHTML = '';
+      const popup = document.getElementById('popup');
+      const title = document.getElementById('plan-title');
+      const form = document.getElementById('customization-form');
+      form.innerHTML = '';
 
-        if (plan === 'basic') {
-            basePrice = 10;
-            title.innerText = 'Basic Meal Plan';
-            form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option></select><br>';
-            form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
-            form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option></select><br>';
-            form.innerHTML += '<label>Side:</label><select><option>Curd</option><option>Salad</option></select><br>';
-        } else if (plan === 'standard') {
-            basePrice = 15;
-            title.innerText = 'Standard Meal Plan';
-            form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option><option>Lamb</option></select><br>';
-            form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
-            form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option><option>Naan</option></select><br>';
-            form.innerHTML += '<label>Side:</label><select><option>Curd</option><option>Salad</option><option>Papad</option></select><br>';
-        } else if (plan === 'premium') {
-            basePrice = 20;
-            title.innerText = 'Premium Meal Plan';
-            form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option><option>Lamb</option></select><br>';
-            form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
-            form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option><option>Naan</option></select><br>';
-            form.innerHTML += '<label>Dessert:</label><select><option>Gulab Jamun</option><option>Kheer</option><option>Rasmalai</option></select><br>';
-            form.innerHTML += '<label>Starter:</label><select><option>Samosa</option><option>Pakora</option><option>Chicken Tikka</option></select><br>';
-        } else if (plan === 'ramadan') {
-            basePrice = 25;
-            title.innerText = 'Ramadan Special Plan';
-            form.innerHTML += '<label>Meal Type:</label><select><option>Iftar</option><option>Suhoor</option></select><br>';
-            form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option><option>Lamb</option></select><br>';
-            form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
-            form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option><option>Naan</option></select><br>';
-            form.innerHTML += '<label>Dessert:</label><select><option>Gulab Jamun</option><option>Kheer</option><option>Rasmalai</option></select><br>';
-            form.innerHTML += '<label>Drink:</label><select><option>Lassi</option><option>Mango Shake</option><option>Soft Drink</option></select><br>';
-        } else if (plan === 'best-friends') {
-            basePrice = 35;
-            title.innerText = 'Best Friends Plan';
-            form.innerHTML += '<label>Number of People:</label><input type="number" id="number-of-people" min="2" value="2" onchange="updatePrice()"><br>';
-            form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option><option>Lamb</option></select><br>';
-            form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
-            form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option><option>Naan</option></select><br>';
-            form.innerHTML += '<label>Dessert:</label><select><option>Gulab Jamun</option><option>Kheer</option><option>Rasmalai</option></select><br>';
-            form.innerHTML += '<label>Drink:</label><select><option>Lassi</option><option>Mango Shake</option><option>Soft Drink</option></select><br>';
-        }
-
-        form.innerHTML += '<label>Number of Days:</label><input type="number" id="days" min="1" value="1" onchange="updatePrice()"><br>';
-        form.innerHTML += '<label>Extra Rotis:</label><input type="number" id="extra-rotis" min="0" max="5" value="0" onchange="updatePrice()"><br>';
-
-        updatePrice();
-        popup.style.display = 'block';
+      if (plan === 'basic') {
+        basePrice = 10;
+        title.innerText = 'Basic Meal Plan';
+        form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option></select><br>';
+        form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
+        form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option></select><br>';
+        form.innerHTML += '<label>Side:</label><select><option>Curd</option><option>Salad</option></select><br>';
+      } else if (plan === 'standard') {
+        basePrice = 15;
+        title.innerText = 'Standard Meal Plan';
+        form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option><option>Lamb</option></select><br>';
+        form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
+        form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option><option>Naan</option></select><br>';
+        form.innerHTML += '<label>Side:</label><select><option>Curd</option><option>Salad</option><option>Papad</option></select><br>';
+      } else if (plan === 'premium') {
+        basePrice = 20;
+        title.innerText = 'Premium Meal Plan';
+        form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option><option>Lamb</option></select><br>';
+        form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
+        form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option><option>Naan</option></select><br>';
+        form.innerHTML += '<label>Dessert:</label><select><option>Gulab Jamun</option><option>Kheer</option><option>Rasmalai</option></select><br>';
+        form.innerHTML += '<label>Starter:</label><select><option>Samosa</option><option>Pakora</option><option>Chicken Tikka</option></select><br>';
+      } else if (plan === 'ramadan') {
+        basePrice = 25;
+        title.innerText = 'Ramadan Special Plan';
+        form.innerHTML += '<label>Meal Type:</label><select><option>Iftar</option><option>Suhoor</option></select><br>';
+        form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option><option>Lamb</option></select><br>';
+        form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
+        form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option><option>Naan</option></select><br>';
+        form.innerHTML += '<label>Dessert:</label><select><option>Gulab Jamun</option><option>Kheer</option><option>Rasmalai</option></select><br>';
+        form.innerHTML += '<label>Drink:</label><select><option>Lassi</option><option>Mango Shake</option><option>Soft Drink</option></select><br>';
+      } else if (plan === 'best-friends') {
+        basePrice = 35;
+        title.innerText = 'Best Friends Plan';
+        form.innerHTML += '<label>Number of People:</label><input type="number" id="number-of-people" min="2" value="2" onchange="updatePrice()"><br>';
+        form.innerHTML += '<label>Protein:</label><select><option>Chicken</option><option>Paneer</option><option>Lamb</option></select><br>';
+        form.innerHTML += '<label>Gravy:</label><select><option>Butter Masala</option><option>Korma</option><option>Tikka Masala</option><option>Kadhai</option></select><br>';
+        form.innerHTML += '<label>Rice/Roti:</label><select><option>Rice</option><option>Roti</option><option>Naan</option></select><br>';
+        form.innerHTML += '<label>Dessert:</label><select><option>Gulab Jamun</option><option>Kheer</option><option>Rasmalai</option></select><br>';
+        form.innerHTML += '<label>Drink:</label><select><option>Lassi</option><option>Mango Shake</option><option>Soft Drink</option></select><br>';
+      }
+      form.innerHTML += '<label>Number of Days:</label><input type="number" id="days" min="1" value="1" onchange="updatePrice()"><br>';
+      form.innerHTML += '<label>Extra Rotis:</label><input type="number" id="extra-rotis" min="0" max="5" value="0" onchange="updatePrice()"><br>';
+      updatePrice();
+      popup.style.display = 'block';
     }
 
     function updatePrice() {
-        days = parseInt(document.getElementById('days').value) || 1;
-        extraRotis = parseInt(document.getElementById('extra-rotis').value) || 0;
-
-        const totalPrice = (basePrice * days) + (extraRotis * extraRotisPrice * days);
-        const discountedPrice = totalPrice * (1 - discount / 100);
-
-        document.getElementById('price-summary').innerHTML = `
-            <p>Base Price: $${basePrice} x ${days} days = $${basePrice * days}</p>
-            <p>Extra Rotis: $${extraRotisPrice} x ${extraRotis} x ${days} days = $${extraRotis * extraRotisPrice * days}</p>
-            <p>Discount: ${discount}%</p>
-            <p><strong>Total Price: $${discountedPrice.toFixed(2)}</strong></p>
-        `;
+      days = parseInt(document.getElementById('days').value) || 1;
+      extraRotis = parseInt(document.getElementById('extra-rotis').value) || 0;
+      const totalPrice = (basePrice * days) + (extraRotis * extraRotisPrice * days);
+      const discountedPrice = totalPrice * (1 - discount / 100);
+      document.getElementById('price-summary').innerHTML = `
+        <p>Base Price: $${basePrice} x ${days} days = $${basePrice * days}</p>
+        <p>Extra Rotis: $${extraRotisPrice} x ${extraRotis} x ${days} days = $${extraRotis * extraRotisPrice * days}</p>
+        <p>Discount: ${discount}%</p>
+        <p><strong>Total Price: $${discountedPrice.toFixed(2)}</strong></p>
+      `;
     }
 
     function closePopup() {
-        document.getElementById('popup').style.display = 'none';
+      document.getElementById('popup').style.display = 'none';
     }
 
     async function submitChoice() {
-  const form = document.getElementById('customization-form');
-  // Get customization details (assumes first four select elements)
-  const protein = form.querySelector('select').value;
-  const gravy = form.querySelectorAll('select')[1].value;
-  const riceRoti = form.querySelectorAll('select')[2].value;
-  const side = form.querySelectorAll('select')[3].value;
+      const form = document.getElementById('customization-form');
+      // Get customization details (assumes first four select elements)
+      const protein = form.querySelector('select').value;
+      const gravy = form.querySelectorAll('select')[1].value;
+      const riceRoti = form.querySelectorAll('select')[2].value;
+      const side = form.querySelectorAll('select')[3].value;
+      const totalPrice = (basePrice * days) + (extraRotis * extraRotisPrice * days);
+      const discountedPrice = totalPrice * (1 - discount / 100);
+      // Build an object with the plan details
+      const planDetails = {
+        restaurantName: "Mirchi Tandoor", // as this is the Mirchi page
+        planName: document.getElementById('plan-title').innerText, // e.g., "Basic Meal Plan"
+        customization: { protein, gravy, riceRoti, side, days, extraRotis },
+        totalPrice: discountedPrice
+      };
 
-  const totalPrice = (basePrice * days) + (extraRotis * extraRotisPrice * days);
-  const discountedPrice = totalPrice * (1 - discount / 100);
-
-  // Build an object with the plan details
-  const planDetails = {
-    restaurantName: "Mirchi Tandoor", // as this is the Mirchi page
-    planName: document.getElementById('plan-title').innerText, // e.g., "Basic Meal Plan"
-    customization: { protein, gravy, riceRoti, side, days, extraRotis },
-    totalPrice: discountedPrice
-  };
-
-  try {
-    // First, check if the user already has any meal plan booked.
-    const existingResponse = await fetch('http://127.0.0.1:3000/api/plan', {
-      method: 'GET',
-      credentials: 'include'
-    });
-    if (existingResponse.ok) {
-      const existingData = await existingResponse.json();
-      if (existingData.plan) {
-        // A plan exists; ask if the user wants to override it.
-        const override = confirm("You already have a meal plan booked. This will override your previous plan. Is that okay?");
-        if (!override) {
-          alert("Plan override canceled.");
-          return;
+      try {
+        // First, check if the user already has any meal plan booked.
+        const existingResponse = await fetch('http://127.0.0.1:3000/api/plan', {
+          method: 'GET',
+          credentials: 'include'
+        });
+        if (existingResponse.ok) {
+          const existingData = await existingResponse.json();
+          if (existingData.plan) {
+            // A plan exists; ask if the user wants to override it.
+            const override = confirm("You already have a meal plan booked. This will override your previous plan. Is that okay?");
+            if (!override) {
+              alert("Plan override canceled.");
+              return;
+            }
+          }
         }
+      } catch (error) {
+        console.error("Error checking existing plan:", error);
+        return;
+      }
+
+      // If no existing plan or if the user confirmed overriding, ask final confirmation.
+      const userConfirmed = confirm("Do you want to book this meal plan?");
+      if (!userConfirmed) {
+        alert("Booking canceled.");
+        return;
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:3000/api/plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(planDetails)
+        });
+        const data = await response.json();
+        alert(data.message || `Your meal plan has been booked!\nTotal Price: $${discountedPrice.toFixed(2)}`);
+        closePopup();
+      } catch (err) {
+        console.error('Error saving meal plan:', err);
       }
     }
-  } catch (error) {
-    console.error("Error checking existing plan:", error);
-    // You can choose to continue or stop here; we'll stop to avoid unintended overrides.
-    return;
-  }
-
-  // If no existing plan or if the user confirmed overriding, ask final confirmation.
-  const userConfirmed = confirm("Do you want to book this meal plan?");
-  if (!userConfirmed) {
-    alert("Booking canceled.");
-    return;
-  }
-
-  // Proceed to save the new meal plan (this will override the previous one)
-  try {
-    const response = await fetch('http://127.0.0.1:3000/api/plan', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(planDetails)
-    });
-    const data = await response.json();
-    alert(data.message || `Your meal plan has been booked!\nTotal Price: $${discountedPrice.toFixed(2)}`);
-    closePopup();
-  } catch (err) {
-    console.error('Error saving meal plan:', err);
-  }
-}
-
-
-
-
-
 
     function showStudentIdPopup() {
-        const studentId = prompt("Enter your Dalhousie Student ID (starts with B00):");
-        if (studentId && studentId.startsWith("B00")) {
-            discount = 5;
-            alert("🎉 5% additional discount applied for Dalhousie students! 🎉");
-            const ribbonPopup = document.querySelector('.ribbon-popup');
-            ribbonPopup.style.display = 'none';
-            updatePrice();
-        } else {
-            alert("Invalid Dalhousie Student ID. Please try again.");
-        }
+      const studentId = prompt("Enter your Dalhousie Student ID (starts with B00):");
+      if (studentId && studentId.startsWith("B00")) {
+        discount = 5;
+        alert("🎉 5% additional discount applied for Dalhousie students! 🎉");
+        const ribbonPopup = document.querySelector('.ribbon-popup');
+        ribbonPopup.style.display = 'none';
+        updatePrice();
+      } else {
+        alert("Invalid Dalhousie Student ID. Please try again.");
+      }
     }
 
     function bookEidMeal() {
-        alert("🎉 Your Eid meal has been booked! Enjoy a 10% early bird discount. 🎉");
+      alert("🎉 Your Eid meal has been booked! Enjoy a 10% early bird discount. 🎉");
     }
 
     function toggleChatbot() {
-        const chatbotPopup = document.getElementById('chatbot-popup');
-        chatbotPopup.style.display = chatbotPopup.style.display === 'block' ? 'none' : 'block';
+      const chatbotPopup = document.getElementById('chatbot-popup');
+      chatbotPopup.style.display = chatbotPopup.style.display === 'block' ? 'none' : 'block';
     }
 
     function sendChatbotMessage() {
-        const input = document.getElementById('chatbot-input').value;
-        alert(`You asked: "${input}"\nOur AI chatbot will respond shortly!`);
+      const input = document.getElementById('chatbot-input').value;
+      alert(`You asked: "${input}"\nOur AI chatbot will respond shortly!`);
     }
-</script>
+  </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="auth.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', checkUserStatus);
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', checkUserStatus);
+  </script>
 </body>
 </html>

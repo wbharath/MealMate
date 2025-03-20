@@ -76,7 +76,7 @@
 
   try {
     const response = await fetch('http://127.0.0.1:3000/api/register', {
-      method: 'POST',
+      method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
@@ -84,7 +84,7 @@
     const text = await response.text();
     let result;
     try {
-      result = text ? JSON.parse(text) : {};
+      result = text ? JSON.parse(text) : {}; 
     } catch (err) {
       console.error("Failed to parse JSON:", err);
       result = {};

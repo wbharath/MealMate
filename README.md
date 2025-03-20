@@ -12,7 +12,7 @@ MealMate is a web application for booking meal plans. Follow the instructions be
 ## Installation
 
 ### 1. Clone the Repository
-git clone https://github.com/yourusername/your-repository-name.git
+git clone https://github.com/wbharath/MealMate.git
 
 ### 2. Navigate to the Project Directory
 cd your-repository-name

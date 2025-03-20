@@ -338,7 +338,7 @@
           window.location.href = 'index.html';
         } else {
           const data = await response.json();
-          alert(data.error || 'Logout failed!');
+          alert(data.message || 'Logout failed!');
         }
       } catch (error) {
         console.error('Error logging out:', error);

@@ -17,6 +17,7 @@ mongoose.connect('mongodb://192.168.2.21:27017/mealMateDB', {
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.error('MongoDB connection error:', err));
 
+
 // Define the User schema
 const UserSchema = new mongoose.Schema({
   fullname: String,
@@ -40,7 +41,7 @@ const MealPlanSchema = new mongoose.Schema({
 const MealPlan = mongoose.model('MealPlan', MealPlanSchema);
   
 
-const app = express();
+const app = express(); // Initalizing the express
 app.use(cors({
     origin: 'http://127.0.0.1:5500',  
     credentials: true,               // Allow session cookies from browser to pass
@@ -74,6 +75,8 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ error: 'Registration failed!' });
   }
 });
+
+
 
 // Login endpoint
 app.post('/api/login', async (req, res) => {
